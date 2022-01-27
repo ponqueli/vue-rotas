@@ -6,6 +6,8 @@ import ContatosHome from './views/contatos/ContatosHome.vue'
 import ContatoDetalhes from './views/contatos/ContatoDetalhes.vue'
 import ContatoEditar from './views/contatos/ContatoEditar.vue'
 import Home from './views/Home.vue'
+import Erro404Contatos from './views/contatos/Erro404Contatos.vue'
+import Erro404 from './views/Erro404.vue'
 
 Vue.use(VueRouter)
 //ROTAS GENERICAS SEMPRE DEVEM SER COLOCADOS ABAIXO NA LISTA DE CONFIGURAÇÃO
@@ -18,6 +20,7 @@ export default new VueRouter({
             //o que é definido aqui é visto dentro do router-view em Contatos.vue
             path:'/contatos',                               // meus-contatos/contatos
             component: Contatos,
+            alias:['/meus-contatos', '/lista-de-contatos', '/list-of-contacts'],
             children: [
                 { 
                     path:':id',  // correspondencia dinamica de rota -  meus-contatos/contatos/2
@@ -26,6 +29,7 @@ export default new VueRouter({
                 }, 
                 { 
                     path: ':id/editar', // meus-contatos.com/contatos/2/editar
+                    alias:':id/alterar',
                     components:{
                         default: ContatoEditar,
                         'contato-detalhes': ContatoDetalhes    
@@ -41,6 +45,12 @@ export default new VueRouter({
                // return '/contatos'
                return { name: 'contatos'}
             }
+        },
+        {
+            path:'/contatos*', component: Erro404Contatos
+        },
+        {
+            path:'*', component: Erro404 //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
         }                          
     ]
 })
