@@ -35,7 +35,8 @@ export default new VueRouter({
                         'contato-detalhes': ContatoDetalhes    
                     } 
                 }, 
-                {   path: '', component: ContatosHome, name: "contatos" }  //rota filha default
+                {   path: '', component: ContatosHome, name: "contatos" },  //rota filha default
+                { path:'*', component: Erro404Contatos }
             ]
         },         
         {  path:'/home',  component: Home },                    // meus-contatos
@@ -45,9 +46,6 @@ export default new VueRouter({
                // return '/contatos'
                return { name: 'contatos'}
             }
-        },
-        {
-            path:'/contatos*', component: Erro404Contatos
         },
         {
             path:'*', component: Erro404 //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
