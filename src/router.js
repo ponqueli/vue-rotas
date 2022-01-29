@@ -16,7 +16,7 @@ const extrairParametroId = (route) => ({
 });
 //ROTAS GENERICAS SEMPRE DEVEM SER COLOCADOS ABAIXO NA LISTA DE CONFIGURAÇÃO
 //ROTAS MAIS ESPECÍFICAS SEMPRE ACIMA!!!!
-export default new VueRouter({
+const router = new VueRouter({
   mode: "history",
   linkActiveClass: "active",
   routes: [
@@ -68,4 +68,16 @@ export default new VueRouter({
       component: Erro404, //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
     },
   ],
-});
+})
+
+router.beforeEach((to, from, next)=>{
+    console.log('BeforeEach')
+    next() //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
+})
+
+//EXECUTADO DEPOIS QUE A NAVEGACAO EH CONFIRMADA
+router.afterEach(() =>{
+    console.log('afterEach')
+})
+
+export default router
