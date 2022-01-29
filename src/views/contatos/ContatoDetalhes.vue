@@ -2,7 +2,7 @@
     <div>
         <h3 class="font-weight-light">Detalhes sobre o Contato com id:  {{ id }} </h3>
         <router-link
-            :to="`/contatos/${id}/editar`"
+            :to="`/contatos/${id}/editar/${id}`"
             class="btn btn-primary">
             Editar
         </router-link>
@@ -11,7 +11,12 @@
 
 <script>
 export default {
-    props: ['id'],
+    props: {
+        id: {
+            type: Number,
+            required: true
+        }
+    },
     created(){
         console.log(this.$props)
     }

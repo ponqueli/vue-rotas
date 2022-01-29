@@ -13,6 +13,9 @@ export default {
         voltar(){
             this.$router.back()
         }
+    },
+    created(){
+        console.log('Parâmetro: ', this.$route.params)
     }
 }
 </script>

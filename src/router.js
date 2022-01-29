@@ -10,6 +10,10 @@ import Erro404Contatos from "./views/contatos/Erro404Contatos.vue";
 import Erro404 from "./views/Erro404.vue";
 
 Vue.use(VueRouter);
+
+const extrairParametroId = (route) => ({
+  id: +route.params.id,
+});
 //ROTAS GENERICAS SEMPRE DEVEM SER COLOCADOS ABAIXO NA LISTA DE CONFIGURAÇÃO
 //ROTAS MAIS ESPECÍFICAS SEMPRE ACIMA!!!!
 export default new VueRouter({
@@ -21,27 +25,29 @@ export default new VueRouter({
       path: "/contatos", // meus-contatos/contatos
       component: Contatos,
       alias: ["/meus-contatos", "/lista-de-contatos", "/list-of-contacts"],
-      props: (route) =>{
-          const busca = route.query.busca 
-          return busca? { busca } : {}
+      props: (route) => {
+        const busca = route.query.busca;
+        return busca ? { busca } : {};
       },
       children: [
         {
-          path: ":id", // correspondencia dinamica de rota -  meus-contatos/contatos/2
+          path: ":id(\\d+)", // correspondencia dinamica de rota -  meus-contatos/contatos/2
           component: ContatoDetalhes,
           name: "contato",
-          props: true,
+          props: extrairParametroId,
         },
         {
-          path: ":id/editar", // meus-contatos.com/contatos/2/editar
-          alias: ":id/alterar",
+          //path: ":id(\\d+)/editar/:opcional?", // meus-contatos.com/contatos/2/editar
+          //path: ":id(\\d+)/editar/:zeroOuMais*", // meus-contatos.com/contatos/2/editar
+          path: ":id(\\d+)/editar/:umOuMais+", // meus-contatos.com/contatos/2/editar/1
+          alias: ":id(\\d+)/alterar",
           components: {
             default: ContatoEditar,
             "contato-detalhes": ContatoDetalhes,
           },
           props: {
-            default: true,
-            "contato-detalhes": true,
+            default: extrairParametroId,
+            "contato-detalhes": extrairParametroId,
           },
         },
         { path: "", component: ContatosHome, name: "contatos" }, //rota filha default
