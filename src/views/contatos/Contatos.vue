@@ -1,7 +1,7 @@
 <template>
     
     <div>
-        <ContatosLista />
+        <ContatosLista :busca="busca" />
         <!-- exibe os componenets das rotas filhas da rota /contatos-->
         <router-view></router-view>
         <router-view name="contato-detalhes"></router-view>
@@ -13,6 +13,7 @@
 
 import ContatosLista from '../../components/contatos/ContatosLista.vue'
 export default {
+    props: ['busca'],
     components: {
         ContatosLista
     }
