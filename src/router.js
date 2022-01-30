@@ -39,8 +39,18 @@ const router = new VueRouter({
         {
           //path: ":id(\\d+)/editar/:opcional?", // meus-contatos.com/contatos/2/editar
           //path: ":id(\\d+)/editar/:zeroOuMais*", // meus-contatos.com/contatos/2/editar
-          path: ":id(\\d+)/editar/:umOuMais+", // meus-contatos.com/contatos/2/editar/1
+          //path: ":id(\\d+)/editar/:umOuMais+", // meus-contatos.com/contatos/2/editar/1
+          path: ":id(\\d+)/editar",
           alias: ":id(\\d+)/alterar",
+          beforeEnter(to, from, next) {
+            //PODE SER CHAMADA DIRETO NA ROTA
+            console.log('beforeEnter')
+            if(to.query.autenticado === 'true'){
+                next()
+                return
+            }
+            next()
+          },
           components: {
             default: ContatoEditar,
             "contato-detalhes": ContatoDetalhes,
@@ -68,16 +78,18 @@ const router = new VueRouter({
       component: Erro404, //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
     },
   ],
-})
+});
 
-router.beforeEach((to, from, next)=>{
-    console.log('BeforeEach')
-    next() //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
-})
+//global
+router.beforeEach((to, from, next) => {
+  console.log("BeforeEach");
+  next(); //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
+});
 
+//global
 //EXECUTADO DEPOIS QUE A NAVEGACAO EH CONFIRMADA
-router.afterEach(() =>{
-    console.log('afterEach')
-})
+router.afterEach(() => {
+  console.log("afterEach");
+});
 
-export default router
+export default router;
