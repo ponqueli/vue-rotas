@@ -44,8 +44,14 @@ const router = new VueRouter({
           alias: ":id(\\d+)/alterar",
           beforeEnter(to, from, next) {
             //PODE SER CHAMADA DIRETO NA ROTA
+            //next(true)                //continuar
+            //next(false)               //bloquear
+            //next('/contatos')         //redirecionamento
+            //next({name: 'contatos'})  //redirecionamento
+            //next(new Error(`permissão insuficiente para acessar o recurso ${to.fullPath}`)) //lança um erro
             console.log("beforeEnter")
-            next()
+
+            next(new Error(`permissão insuficiente para acessar o recurso ${to.fullPath}`)) 
           },
           components: {
             default: ContatoEditar,
@@ -93,6 +99,10 @@ router.beforeResolve((to, from, next)=>{
 router.afterEach(() => {
   console.log("afterEach");
 });
+
+router.onError(erro=>{
+    console.log(erro)
+})
 
 export default router;
 
