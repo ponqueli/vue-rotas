@@ -44,12 +44,8 @@ const router = new VueRouter({
           alias: ":id(\\d+)/alterar",
           beforeEnter(to, from, next) {
             //PODE SER CHAMADA DIRETO NA ROTA
-            console.log("beforeEnter");
-            if (to.query.autenticado === "true") {
-              //está assim apenas para fins de teste
-              return next();
-            }
-            next("/contatos"); //poderia ir para login se tivesse autenticação
+            console.log("beforeEnter")
+            next()
           },
           components: {
             default: ContatoEditar,
