@@ -42,6 +42,9 @@ const router = new VueRouter({
           //path: ":id(\\d+)/editar/:umOuMais+", // meus-contatos.com/contatos/2/editar/1
           path: ":id(\\d+)/editar",
           alias: ":id(\\d+)/alterar",
+          meta:{ //PODE PASSAR OS CAMPOS PERSONALIZADOS QUANTO QUISER
+              requerAutenticacao: true
+          },
           beforeEnter(to, from, next) {
             //PODE SER CHAMADA DIRETO NA ROTA
             //next(true)                //continuar
@@ -51,7 +54,7 @@ const router = new VueRouter({
             //next(new Error(`permissão insuficiente para acessar o recurso ${to.fullPath}`)) //lança um erro
             console.log("beforeEnter")
 
-            next(new Error(`permissão insuficiente para acessar o recurso ${to.fullPath}`)) 
+            next()
           },
           components: {
             default: ContatoEditar,
@@ -85,6 +88,7 @@ const router = new VueRouter({
 //global
 router.beforeEach((to, from, next) => {
   console.log("BeforeEach");
+  console.log("requerAutenticacao? "+ to.meta.requerAutenticacao )
   next(); //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
 });
 
