@@ -82,10 +82,33 @@ router.beforeEach((to, from, next) => {
   next(); //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
 });
 
+//ULTIMA ROTA CHAMADA -(LOGO ANTES DA NAVEGAÇÃO SER CONFIRMADA) depois afterEach 
+router.beforeResolve((to, from, next)=>{
+    console.log("beforeResolve")
+    next()
+})
+
 //global
-//EXECUTADO DEPOIS QUE A NAVEGACAO EH CONFIRMADA
+//EXECUTADO DEPOIS QUE A NAVEGACAO EH CONFIRMADA - UNICA QUE NAO RECEBE O NEXT
 router.afterEach(() => {
   console.log("afterEach");
 });
 
 export default router;
+
+//THE FULL NAVIGATION RESOLUTION FLOW
+
+/*  
+    1 - Navigation triggered
+    2 - Call leave guards in deactivated components
+    3 - Call global beforeEach guards.
+    4 - Call beforeRouteUpdate guards in reused components
+    5 - Call beforeEnter in route configs
+    6 - Resolve async route components
+    7 - Call beforeRouteEnter in activated components
+    8 - Call global beforeResolve guards.
+    9 - Navigation confirmed.
+    10- Call global afterEach hooks
+    11- DOM updates triggered
+    12- Call callbacks passed to next in beforeRouteEnter guards with instantiated instances.
+*/
