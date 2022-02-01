@@ -8,6 +8,9 @@ import ContatoEditar from "./views/contatos/ContatoEditar.vue";
 import Home from "./views/Home.vue";
 import Erro404Contatos from "./views/contatos/Erro404Contatos.vue";
 import Erro404 from "./views/Erro404.vue";
+import Login from "./views/login/Login.vue";
+
+import EventBus from "./event-bus";
 
 Vue.use(VueRouter);
 
@@ -42,8 +45,9 @@ const router = new VueRouter({
           //path: ":id(\\d+)/editar/:umOuMais+", // meus-contatos.com/contatos/2/editar/1
           path: ":id(\\d+)/editar",
           alias: ":id(\\d+)/alterar",
-          meta:{ //PODE PASSAR OS CAMPOS PERSONALIZADOS QUANTO QUISER
-              requerAutenticacao: true
+          meta: {
+            //PODE PASSAR OS CAMPOS PERSONALIZADOS, QUANTO QUISER
+            requerAutenticacao: true,
           },
           beforeEnter(to, from, next) {
             //PODE SER CHAMADA DIRETO NA ROTA
@@ -52,9 +56,9 @@ const router = new VueRouter({
             //next('/contatos')         //redirecionamento
             //next({name: 'contatos'})  //redirecionamento
             //next(new Error(`permissão insuficiente para acessar o recurso ${to.fullPath}`)) //lança um erro
-            console.log("beforeEnter")
+            console.log("beforeEnter");
 
-            next()
+            next();
           },
           components: {
             default: ContatoEditar,
@@ -70,6 +74,7 @@ const router = new VueRouter({
       ],
     },
     { path: "/home", component: Home }, // meus-contatos
+    { path: "/login", component: Login }, //
     //{  path:'/', redirect: '/contatos' }
     {
       path: "/",
@@ -88,15 +93,26 @@ const router = new VueRouter({
 //global
 router.beforeEach((to, from, next) => {
   console.log("BeforeEach");
-  console.log("requerAutenticacao? "+ to.meta.requerAutenticacao )
+  console.log("requerAutenticacao? " + to.meta.requerAutenticacao);
+  const estaAutenficado = EventBus.autenticado;
+  estaAutenficado;
+  if (to.matched.some((rota) => rota.meta.requerAutenticacao)) {
+    if (!estaAutenficado) {
+      next({
+        path: '/login',
+        query:{ redirecionar: to.fullPath }
+      })
+      return
+    }
+  }
   next(); //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
 });
 
-//ULTIMA ROTA CHAMADA -(LOGO ANTES DA NAVEGAÇÃO SER CONFIRMADA) depois afterEach 
-router.beforeResolve((to, from, next)=>{
-    console.log("beforeResolve")
-    next()
-})
+//ULTIMA ROTA CHAMADA -(LOGO ANTES DA NAVEGAÇÃO SER CONFIRMADA) depois afterEach
+router.beforeResolve((to, from, next) => {
+  console.log("beforeResolve");
+  next();
+});
 
 //global
 //EXECUTADO DEPOIS QUE A NAVEGACAO EH CONFIRMADA - UNICA QUE NAO RECEBE O NEXT
@@ -104,9 +120,9 @@ router.afterEach(() => {
   console.log("afterEach");
 });
 
-router.onError(erro=>{
-    console.log(erro)
-})
+router.onError((erro) => {
+  console.log(erro);
+});
 
 export default router;
 
