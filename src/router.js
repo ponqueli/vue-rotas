@@ -1,16 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Contatos from "./views/contatos/Contatos.vue";
-import ContatosHome from "./views/contatos/ContatosHome.vue";
-import ContatoDetalhes from "./views/contatos/ContatoDetalhes.vue";
-import ContatoEditar from "./views/contatos/ContatoEditar.vue";
-import Home from "./views/Home.vue";
-import Erro404Contatos from "./views/contatos/Erro404Contatos.vue";
-import Erro404 from "./views/Erro404.vue";
-import Login from "./views/login/Login.vue";
-
 import EventBus from "./event-bus";
+
+const ContatosHome = () => import(/* webpackChunkName: "contatos" */"./views/contatos/ContatosHome.vue");
+const ContatoDetalhes = () => import(/* webpackChunkName: "contatos" */"./views/contatos/ContatoDetalhes.vue");
+const ContatoEditar = () => import(/* webpackChunkName: "contatos" */"./views/contatos/ContatoEditar.vue");
+const Erro404Contatos= () => import("./views/contatos/Erro404Contatos.vue");
+
 
 Vue.use(VueRouter);
 
@@ -40,7 +37,7 @@ const router = new VueRouter({
     {
       //o que é definido aqui é visto dentro do router-view em Contatos.vue
       path: "/contatos", // meus-contatos/contatos
-      component: Contatos,
+      component: ()=> import('./views/contatos/Contatos.vue'),
       alias: ["/meus-contatos", "/lista-de-contatos", "/list-of-contacts"],
       props: (route) => {
         const busca = route.query.busca;
@@ -87,8 +84,8 @@ const router = new VueRouter({
         { path: "*", component: Erro404Contatos },
       ],
     },
-    { path: "/home", component: Home }, // meus-contatos
-    { path: "/login", component: Login }, //
+    { path: "/home", component: ()=> import('./views/Home.vue') }, // meus-contatos
+    { path: "/login", component: ()=> import('./views/login/Login.vue')  }, //
     //{  path:'/', redirect: '/contatos' }
     {
       path: "/",
@@ -99,7 +96,7 @@ const router = new VueRouter({
     },
     {
       path: "*",
-      component: Erro404, //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
+      component: ()=> import('./views/Erro404.vue'), //rota coringa - a mais genérica que existe (NIVEL GLOBAL)
     },
   ],
 });
