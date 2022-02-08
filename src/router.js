@@ -22,6 +22,20 @@ const extrairParametroId = (route) => ({
 const router = new VueRouter({
   mode: "history",
   linkActiveClass: "active",
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve) => {
+      if (savedPosition) {
+        return resolve(savedPosition);
+      }
+      if (to.hash) {
+        return resolve({
+          selector: to.hash,
+          offset: { x: 0, y: 0 },
+        });
+      }
+      resolve({ x: 0, y: 0 });
+    });
+  },
   routes: [
     {
       //o que é definido aqui é visto dentro do router-view em Contatos.vue
@@ -99,10 +113,10 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((rota) => rota.meta.requerAutenticacao)) {
     if (!estaAutenficado) {
       next({
-        path: '/login',
-        query:{ redirecionar: to.fullPath }
-      })
-      return
+        path: "/login",
+        query: { redirecionar: to.fullPath },
+      });
+      return;
     }
   }
   next(); //SEMPRE CHAMAR O NEXT PRA NAO TER PROBLEMA
