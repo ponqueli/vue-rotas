@@ -1,7 +1,6 @@
 <template>
     
     <div>
-        <ContatosLista :busca="busca" />
         <!-- exibe os componenets das rotas filhas da rota /contatos-->
         <transition name="slide" mode="out-in">
             <router-view></router-view>
@@ -13,16 +12,7 @@
     
 </template>
 
-<script>
 
-import ContatosLista from '../../components/contatos/ContatosLista.vue'
-export default {
-    props: ['busca'],
-    components: {
-        ContatosLista
-    }
-}
-</script>
 <style scoped>
 .slide-enter, .slide-leave-to{
     transform: translateX(-50px);
