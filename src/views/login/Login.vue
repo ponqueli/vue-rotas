@@ -40,7 +40,7 @@ export default {
     methods:{
         entrar(){
             //apenas para fins de exemplo
-            if(this.usuario.email === 'ze@email.com' && this.usuario.senha ==='1234'){
+            if(this.usuario.email === 'ze@teste.com' && this.usuario.senha ==='123'){
                 EventBus.$emit('autenticar', true )
                 const destino = this.$route.query.redirecionar || 'contatos'
                 this.$router.push(destino)

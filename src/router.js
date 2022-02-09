@@ -106,7 +106,6 @@ router.beforeEach((to, from, next) => {
   console.log("BeforeEach");
   console.log("requerAutenticacao? " + to.meta.requerAutenticacao);
   const estaAutenficado = EventBus.autenticado;
-  estaAutenficado;
   if (to.matched.some((rota) => rota.meta.requerAutenticacao)) {
     if (!estaAutenficado) {
       next({
