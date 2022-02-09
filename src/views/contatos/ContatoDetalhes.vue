@@ -9,9 +9,15 @@
         </button>
         <router-link
             :to="`/contatos/${id}/editar`"
-            class="btn btn-primary">
+            class="btn btn-primary mr-2">
             Editar
         </router-link>
+        <button 
+            type="btn" 
+            class="btn btn-danger mr-2"
+            @click="excluir">
+            Excluir
+        </button>
     </div>
 </template>
 
@@ -27,7 +33,8 @@ export default {
     },
     data(){
         return{
-            contato: undefined
+            contato: undefined,
+            estaCancelado: true
         }
     },
     // created(){
@@ -41,6 +48,18 @@ export default {
     beforeRouteUpdate(to, from, next){//chamada qdo o parâmetro da rota foi mudado e o componente é reutilizado
          this.contato = EventBus.buscarContato(this.id)
         next()
+    },
+    beforeRouteLeave(to,from,next){
+        this.estaCancelando
+            ? next(window.confirm("Deseja realmente sair?"))
+            : next()
+    },
+    methods:{
+        excluir(){
+            EventBus.excluirContato(this.id)
+            this.estaCancelando = false
+            this.$router.push('/contatos')
+        }
     }
 }
 </script>

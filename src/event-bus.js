@@ -21,6 +21,10 @@ export default new Vue({
     editarContato(contato){
       const indice = this.contatos.findIndex(c => c.id === contato.id)
       this.contatos.splice(indice, 1, contato)
+    },
+    excluirContato(id){
+      const indice = this.contatos.findIndex(c => c.id === id)
+      this.contatos.splice(indice, 1)
     }
   }
 });
