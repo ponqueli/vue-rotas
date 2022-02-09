@@ -22,6 +22,11 @@ export default new Vue({
       const indice = this.contatos.findIndex(c => c.id === contato.id)
       this.contatos.splice(indice, 1, contato)
     },
+    inserirContato(contato){
+      let maxID = Math.max.apply(Math,this.contatos.map((c)=>{ return c.id }))
+      let newID = ++maxID
+      this.contatos.push({id:newID, nome: contato.nome, email: contato.email})
+    },
     excluirContato(id){
       const indice = this.contatos.findIndex(c => c.id === id)
       this.contatos.splice(indice, 1)

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="contato">
+    <div >
         <h3 class="font-weight-light"> Nome: {{ contato.nome }} </h3>
         
         <form @submit.prevent="salvar">
@@ -67,9 +67,13 @@ export default {
             this.$router.back()
         },
         salvar(){
-            EventBus.editarContato(this.contato)
-            this.estaCancelando = false
-            this.$router.push('/contatos')
+            if(this.contato){
+                EventBus.editarContato(this.contato)
+                this.estaCancelando = false
+                this.$router.push('/contatos')
+            }else{
+                EventBus.inserirContato(this.contato)
+            }
         }
     }
 }
